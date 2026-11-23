@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>联邦控制局 · 内部档案终端 | FEDERAL BUREAU OF CONTROL</title>
+<meta name="description" content="联邦控制局（FBC）内部档案终端：最古老屋、嘶鸣入侵、董事会、异化物与力量之物、世界异变事件编年、部门编制与幕后原型全记录。">
+<meta name="theme-color" content="#07070a">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/sections.css">
+<link rel="stylesheet" href="assets/css/effects.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2307070a'/><path d='M16 27 L29 6 L3 6 Z' fill='none' stroke='%23cf2a1e' stroke-width='2.4'/><circle cx='16' cy='13' r='3.4' fill='%23cf2a1e'/></svg>">
+</head>
+<body class="is-locked">
+
+<!-- =====================================================================
+     SVG 符号库
+     ===================================================================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-fbc" viewBox="0 0 100 100">
+      <path d="M50 88 L92 16 L8 16 Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="miter"/>
+      <circle cx="50" cy="42" r="11.5" fill="none" stroke="currentColor" stroke-width="5"/>
+      <path d="M50 30.5 V53.5 M38.5 42 H61.5" stroke="currentColor" stroke-width="3.4"/>
+      <path d="M28 74 H72" stroke="currentColor" stroke-width="3.4"/>
+    </symbol>
+    <symbol id="i-pyramid" viewBox="0 0 120 100">
+      <path d="M60 92 L114 10 L6 10 Z" fill="currentColor"/>
+      <path d="M60 92 L114 10" stroke="rgba(140,150,255,.35)" stroke-width="1.6"/>
+    </symbol>
+    <symbol id="i-tri" viewBox="0 0 100 100">
+      <path d="M50 92 L96 12 L4 12 Z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- =====================================================================
+     全局特效层
+     ===================================================================== -->
+<div id="progress"></div>
+<div class="fx" id="fx-glow"></div>
+<div class="fx" id="fx-vig"></div>
+<div class="fx" id="fx-scan"></div>
+<div class="fx" id="fx-grain">
+  <svg xmlns="http://www.w3.org/2000/svg"><filter id="grain-f"><feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#grain-f)"/></svg>
+</div>
+<div class="fx" id="fx-hiss"></div>
+<div id="cursor"></div>
+
+<!-- =====================================================================
+     准入终端
+     ===================================================================== -->
+<div id="boot">
+  <!-- 封面几何层 -->
+  <div class="boot-grid" aria-hidden="true"></div>
+  <div class="boot-art" aria-hidden="true">
+    <svg viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid slice">
+      <g class="art-rings art-r1">
+        <circle cx="600" cy="600" r="172"/>
+        <circle cx="600" cy="600" r="258"/>
+        <circle cx="600" cy="600" r="352"/>
+      </g>
+      <g class="art-rings art-r2">
+        <circle cx="600" cy="600" r="446"/>
+        <circle cx="600" cy="600" r="552"/>
+      </g>
+      <g class="art-pyramid">
+        <path class="py-out" d="M600 884 L878 322 L322 322 Z"/>
+        <path class="py-apx" d="M600 884 L878 322"/>
+        <path class="py-apx" d="M600 884 L322 322"/>
+        <path class="py-h" d="M418 648 H782"/>
+        <circle class="py-eye" cx="600" cy="500" r="34"/>
+      </g>
+      <g class="art-ticks">
+        <path d="M600 60 V104"/><path d="M600 1096 V1140"/>
+        <path d="M60 600 H104"/><path d="M1096 600 H1140"/>
+      </g>
+    </svg>
+  </div>
+  <div class="boot-scan" aria-hidden="true"></div>
+  <div class="boot-side boot-side-l" aria-hidden="true">NY · OLDEST HOUSE · 34 THOMAS ST</div>
+  <div class="boot-side boot-side-r" aria-hidden="true">INVENIO · INVESTIGATIO · IMPERIUM</div>
+
+  <div class="boot-top">
+    <div class="label">FBC · 内部网络 / 仅限授权人员</div>
+    <div class="label">节点 <b class="num" style="color:var(--bone-dim)">NY-OLDEST-HOUSE-01</b></div>
+  </div>
+
+  <div class="boot-center">
+    <svg class="boot-mark" aria-hidden="true"><use href="#i-fbc"/></svg>
+    <h1 class="boot-title">
+      <span data-decode="Federal Bureau">Federal Bureau</span>
+      <span data-decode="of Control">of Control</span>
+      <span class="cn" data-decode="联 邦 控 制 局">联 邦 控 制 局</span>
+    </h1>
+    <p class="boot-sub mono tiny faint">
+      本终端所载一切资料受《国家机密法》第 7 条与第 12 条约束。<br>
+      未经授权的访问、复制、传播，将被视为对内部安全的直接威胁。
+    </p>
+    <button class="boot-enter" id="btn-enter">
+      <span>接 入 档 案</span>
+      <span class="mono tiny" style="opacity:.6">[ ENTER ]</span>
+    </button>
+  </div>
+
+  <div class="boot-bottom">
+    <div class="boot-log" id="boot-log"></div>
+    <div class="label" style="text-align:right">
+      版本 <b class="num" style="color:var(--bone-dim)">7.13.19</b><br>
+      等待身份核验…
+    </div>
+  </div>
+
+  <div class="boot-band" aria-hidden="true">
+    <div class="band-track">
+      <span>■ 内部安全等级 3 ■ 未经授权的访问将被记录并提交调查部 ■ 本终端所载一切资料受《国家机密法》第 7 条与第 12 条约束 ■ 请勿回答任何从通风口发出的问题 ■ 如听见哼唱，请立即前往最近的黑石衬墙房间并等待佩戴 HRA 的人员到场 ■ 最古老屋内禁止吸烟 ■ 不要相信任何自称是你上司的声音 ■</span>
+      <span>■ 内部安全等级 3 ■ 未经授权的访问将被记录并提交调查部 ■ 本终端所载一切资料受《国家机密法》第 7 条与第 12 条约束 ■ 请勿回答任何从通风口发出的问题 ■ 如听见哼唱，请立即前往最近的黑石衬墙房间并等待佩戴 HRA 的人员到场 ■ 最古老屋内禁止吸烟 ■ 不要相信任何自称是你上司的声音 ■</span>
+    </div>
+  </div>
+</div>
+<div class="boot-flash" id="boot-flash"></div>
+
+<!-- 档案浮层：二级（条目档案）/ 三级（附件全文） -->
+<div id="dossier" class="dossier" role="dialog" aria-modal="true" aria-label="档案详情" aria-hidden="true">
+  <div class="dos-scrim" data-dos-close></div>
+  <div class="dos-panel">
+    <header class="dos-head">
+      <nav class="dos-crumb" id="dos-crumb" aria-label="档案路径"></nav>
+      <button class="dos-close" id="dos-close" type="button" aria-label="关闭档案">
+        <span>关闭</span><kbd>ESC</kbd>
+      </button>
+    </header>
+    <div class="dos-scroll" id="dos-scroll"></div>
+  </div>
+</div>
+
+<!-- 全站检索面板（Ctrl / Cmd + K） -->
+<div id="palette" class="palette" role="dialog" aria-modal="true" aria-label="全站检索" aria-hidden="true">
+  <div class="pal-scrim" data-pal-close></div>
+  <div class="pal-panel">
+    <div class="pal-hd">
+      <span class="pal-ic mono" aria-hidden="true">⌕</span>
+      <input type="search" id="pal-input" placeholder="检索档案、部门、藏品、词条、案卷、通讯…" autocomplete="off" spellcheck="false" aria-label="检索词">
+      <button class="pal-x" type="button" id="pal-close" aria-label="关闭检索">ESC</button>
+    </div>
+    <div class="pal-list" id="pal-list" role="listbox" aria-label="检索结果"></div>
+    <div class="pal-foot mono" id="pal-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> 选择</span>
+      <span><kbd>Enter</kbd> 打开</span>
+      <span><kbd>Esc</kbd> 关闭</span>
+      <span class="pal-cnt" id="pal-cnt">— / —</span>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     HUD
+     ===================================================================== -->
+<header id="hud">
+  <a class="hud-brand" href="#s-briefing">
+    <svg aria-hidden="true"><use href="#i-fbc"/></svg>
+    <span class="t">联邦控制局<small>Bureau of Control</small></span>
+  </a>
+
+  <nav class="hud-nav" id="hud-nav" aria-label="章节导航"></nav>
+
+  <div class="hud-right">
+    <div class="hud-meter" id="hud-meter" title="环境共振指数">
+      <span class="lbl">共振</span>
+      <span class="val">12%</span>
+      <i class="bar"><b></b></i>
+    </div>
+    <button class="ctrl" id="btn-search" aria-label="全站检索" title="全站检索 (Ctrl+K)">
+      <span class="dot"></span><span>检索</span>
+    </button>
+    <button class="ctrl" id="btn-hiss" aria-pressed="false" aria-label="切换嘶鸣污染模拟" title="切换嘶鸣污染模拟 (H)">
+      <span class="dot"></span><span>嘶鸣污染</span>
+    </button>
+    <button class="ctrl" id="btn-music" aria-pressed="false" aria-label="切换环境音乐" title="切换环境音乐 (M)">
+      <span class="dot"></span><span>环境音乐</span>
+    </button>
+    <button class="ctrl" id="btn-sound" aria-pressed="false" aria-label="切换终端音效" title="切换终端音效 (S)">
+      <span class="dot"></span><span>音效</span>
+    </button>
+    <div class="hud-clock" id="clock">--:--:--</div>
+  </div>
+</header>
+
+<!-- 权限拨盘 -->
+<div id="clearance">
+  <span class="lbl">密级许可</span>
+  <button class="clr-btn" data-clr="0" aria-pressed="false">公开摘要</button>
+  <button class="clr-btn" data-clr="1" aria-pressed="false">一级 · 见习</button>
+  <button class="clr-btn" data-clr="2" aria-pressed="false">二级 · 研究员</button>
+  <button class="clr-btn" data-clr="3" aria-pressed="true">三级 · 部门主管</button>
+  <button class="clr-btn" data-clr="4" aria-pressed="false">局长权限</button>
+  <span class="clr-hint">当前可解译字段：<b id="clr-label">三级</b> · 点击密文条可尝试解密</span>
+</div>
+
+<!-- 章节侧轨 -->
+<nav class="rail" id="rail" aria-label="章节快速跳转"></nav>
+
+<!-- =====================================================================
+     主体
+     ===================================================================== -->
+<main>
+
+  <!-- 00 · 局长简报 ------------------------------------------------------ -->
+  <section class="sec grid-bg" id="s-briefing" data-no="00">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 00 / 16</span><span class="rule-red"></span></div>
+      <h2>局长简报</h2>
+      <p class="desc">如果你正在读这段话，说明你已经走进了这栋楼。这栋楼不欢迎你，但它需要你。</p>
+    </div>
+    <div class="cols-asym">
+      <div class="reveal">
+        <p class="lead" id="briefing-type" data-typewriter></p>
+        <div class="quote-block" style="margin-top:2rem">
+          “我们的使命，是拓展人类理解的边界，并收容那些我们尚不能控制的东西。”
+          <cite>— 局长 布罗德里克·诺斯莫尔 · 使命陈述 · 1964</cite>
+        </div>
+      </div>
+      <div class="panel reveal">
+        <div class="panel-hd"><span class="label">终端状态</span><span class="tag is-red">实时</span></div>
+        <dl class="kv-stack" id="brief-stats"></dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 · 联邦控制局 ---------------------------------------------------- -->
+  <section class="sec" id="s-bureau" data-no="01">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 01 / 16</span><span class="rule-red"></span></div>
+      <h2>一个不存在于任何预算里的机构</h2>
+      <p class="desc">联邦控制局于 1964 年正式定名。它没有出现在任何一份公开的联邦机构名录中，也没有任何一位总统承认过它的存在。它存在的唯一理由，是处理那些“不该发生却发生了”的事。</p>
+    </div>
+    <div class="stats reveal" id="bureau-stats"></div>
+    <div class="cols-2" style="margin-top:clamp(1.8rem,3.6vw,3.2rem)">
+      <div class="reveal" id="bureau-about"></div>
+      <div class="clippings reveal" id="bureau-clippings"></div>
+    </div>
+  </section>
+
+  <!-- 02 · 最古老屋 ------------------------------------------------------ -->
+  <section class="sec" id="s-house" data-no="02">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 02 / 16</span><span class="rule-red"></span></div>
+      <h2>最古老屋</h2>
+      <p class="desc">纽约，34 Thomas Street，一栋没有窗户的野兽派高楼。它比这座城市更早存在，也比你更晚结束。控制局只是住在里面——它并不拥有它。站内登记把最古老屋划分为<b>六个扇区</b>：地基 · 钉子、维护扇区、行政扇区、研究扇区、收容扇区、调查扇区。以下按扇区列出<b>地图上实际标注的全部区域</b>——它们是扇区内部的房间、走廊与设施，<b>不是各自独立的楼层</b>。带数字的可点开档案，数字是该区域的编制项数；其余只有登记名。完整的位置关系见 <a href="#s-map" style="color:var(--red);text-decoration:underline">档案 03 · 地图</a>。机动性质的行动部（D-21）不编入固定扇区，其档案见 <a href="#s-depts" style="color:var(--red);text-decoration:underline">档案 05 · 编制</a>。</p>
+    </div>
+    <div class="house reveal">
+      <div class="tower" id="tower" role="group" aria-label="最古老屋扇区分布"></div>
+      <div class="floor-info" id="floor-info">
+        <div class="ghost" id="floor-ghost">01</div>
+        <div class="body" id="floor-body"></div>
+      </div>
+    </div>
+
+    <div class="notice is-yellow reveal" style="margin-top:1.6rem">
+      <span class="ic">!</span>
+      <span><b>建筑守则：</b>最古老屋拒绝一切“新”的东西。任何在楼内被认定为“现代”的技术、材料或概念，都会导致空间折叠、时间回环或人员失踪。<b>全楼禁止吸烟</b>，禁止携带 1990 年以后生产的电子设备。如果你在走廊里看见一扇昨天还不存在的门，请不要打开它——除非门后有人正在等你，且你确定那个人不是你自己。</span>
+    </div>
+  </section>
+
+  <!-- 03 · 互动地图 ---------------------------------------------------- -->
+  <section class="sec" id="s-map" data-no="03">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 03 / 16</span><span class="rule-red"></span></div>
+      <h2 class="glitch" data-txt="地图">地图</h2>
+      <p class="desc">这张图按游戏内的实际坐标标注：六个扇区各占一块，图上每一个点都是从控制局档案里抄下来的登记位置——成箱的补给、封死的门、只响过一次的录像带、永远打不开的自动售货机，以及那些你走过却不知道自己走过的通道。左侧勾选要看的类别，滚轮缩放，按住拖拽；点任意一个图钉可读出它的登记名。</p>
+    </div>
+
+    <div class="poi reveal">
+      <aside class="poi-side">
+        <div class="poi-side-hd">
+          <span class="label">点位筛选</span>
+          <button class="chip" type="button" id="poi-all">全选</button>
+          <button class="chip" type="button" id="poi-none">全不选</button>
+        </div>
+        <div class="poi-filters" id="poi-filters"></div>
+        <div class="poi-count mono" id="poi-count">— / —</div>
+      </aside>
+      <div class="poi-main">
+        <div class="atlas-tools poi-tools">
+          <span class="label">最古老屋 · 六扇区</span>
+          <span class="poi-zoombox">
+            <button class="chip" type="button" id="poi-zoom-out" aria-label="缩小地图">−</button>
+            <b class="mono poi-zlv" id="poi-zoom-lv">100%</b>
+            <button class="chip" type="button" id="poi-zoom-in" aria-label="放大地图">＋</button>
+            <button class="chip" type="button" id="poi-zoom-reset" aria-label="复位地图视图">复位</button>
+          </span>
+          <span class="poi-hint mono">滚轮缩放 · 拖拽平移 · 点击图钉</span>
+        </div>
+        <div class="poi-canvas" id="poi-canvas" tabindex="0" role="application" aria-label="最古老屋互动地图：六个扇区与登记点位，可缩放平移，点击图钉查看登记名"></div>
+        <div class="poi-lblhint mono" id="poi-lbl-hint">放大到 160% 以上显示区域名</div>
+        <div class="poi-tip mono" id="poi-tip" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · 嘶鸣 ---------------------------------------------------------- -->
+  <section class="sec hiss-sec" id="s-hiss" data-no="04">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 04 / 16</span><span class="rule-red"></span></div>
+      <h2 class="glitch" data-txt="嘶鸣" id="hiss-title">嘶鸣</h2>
+      <p class="desc">一种共振。一段被反复吟诵的句子。它不感染身体，它感染你脑子里那个正在读这句话的声音。中文为本站译文，鼠标悬停可见英文原文。</p>
+    </div>
+    <div class="cols-asym">
+      <div>
+        <p class="label" style="margin-bottom:1rem">截获音频转写 · 循环片段</p>
+        <ol class="chant" id="chant"></ol>
+      </div>
+      <div class="reveal" id="hiss-about"></div>
+    </div>
+  </section>
+
+  <!-- 05 · 董事会 -------------------------------------------------------- -->
+  <section class="sec" id="s-board" data-no="05">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 05 / 16</span><span class="rule-red"></span></div>
+      <h2>董事会</h2>
+      <p class="desc">控制局真正的主人不住在这栋楼里，甚至不住在这个维度里。它以倒立黑金字塔的形态悬在星界，用一段段像企业黑话的句子说话，通过一部不会响的电话下达任命。</p>
+    </div>
+    <div class="cols-2">
+      <div class="board-console reveal">
+        <div class="pyramid-wrap" id="pyramid-wrap">
+          <div class="rings"><i></i><i></i><i></i></div>
+          <svg class="pyramid" aria-hidden="true"><use href="#i-pyramid"/></svg>
+        </div>
+        <button class="btn is-solid" id="btn-sync">发起共振同步</button>
+      </div>
+      <div>
+        <div class="board-feed" id="board-feed"><span class="cursor"></span></div>
+        <p class="tiny faint" style="margin-top:.9rem">
+          注：董事会的讯息是心灵广播——听觉上无法理解，但接收者能直接明白其含义。讯息常被打乱、一词多义：它自称来自 <span class="mono" style="color:var(--astral-lit)">the Pyramid</span>，也可被理解为 <span class="mono" style="color:var(--astral-lit)">the Other</span>。档案部至今无法确定哪一个才是“正确”的解释。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · 部门 ---------------------------------------------------------- -->
+  <section class="sec" id="s-depts" data-no="06">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 06 / 16</span><span class="rule-red"></span></div>
+      <h2>编制：五十一个部门</h2>
+      <p class="desc">控制局用官僚体系的形状来对抗不可名状之物：把恐惧编号、归档、分派给某个部门、再交由某个主管签字。点击任一部门可展开在编情况，点「完整档案」可查阅该部门的卷宗与内部文件。部分条目带 <b>档案推定</b> 标记，表示其存在只能由旁证推出。</p>
+    </div>
+    <div class="dept-grid reveal" id="dept-grid"></div>
+  </section>
+
+  <!-- 07 · 异化物 -------------------------------------------------------- -->
+  <section class="sec" id="s-items" data-no="07">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 07 / 16</span><span class="rule-red"></span></div>
+      <h2>异化物与力量之物</h2>
+      <p class="desc">当一件普通物品被足够多的人以足够强烈的情绪反复注视，它就会开始做梦。醒来之后，它就再也不是一件物品了。控制局收集它们，编号它们，把它们锁在混凝土里。点击任一行的「完整案卷」，可调阅该藏品的背景、收容程序与附件原文。</p>
+    </div>
+    <div class="filters" id="item-filters"></div>
+    <div class="tbl-wrap reveal">
+      <table class="tbl">
+        <thead><tr><th>编号</th><th>物品</th><th>收容地</th><th>效应摘要</th></tr></thead>
+        <tbody id="item-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 08 · AWE 编年 ------------------------------------------------------ -->
+  <section class="sec" id="s-awe" data-no="08">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 08 / 16</span><span class="rule-red"></span></div>
+      <h2>世界异变事件编年</h2>
+      <p class="desc">Altered World Event —— 现实短暂忘记自己规则的那些时刻。每一次 AWE 都会留下一件异化物、一群失踪者，以及一份被涂黑的报告。编号栏中的涂黑需由更高密级解译；点「完整报告」可调阅调查报告与目击者转写。</p>
+    </div>
+    <div class="tl reveal" id="awe-list"></div>
+  </section>
+
+  <!-- 09 · 人员 ---------------------------------------------------------- -->
+  <section class="sec" id="s-cast" data-no="09">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 09 / 16</span><span class="rule-red"></span></div>
+      <h2>人事档案</h2>
+      <p class="desc">在这栋楼里工作的人分为两种：已经接受现实的，和即将接受现实的。以下条目按最后一次更新时的在职状态排列。点「完整人事档案」可查阅履历、心理评估与留存文件。</p>
+    </div>
+    <div class="cast-grid reveal" id="cast-grid"></div>
+  </section>
+
+  <!-- 10 · 文件摘录 ------------------------------------------------------ -->
+  <section class="sec" id="s-docs" data-no="10">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 10 / 16</span><span class="rule-red"></span></div>
+      <h2>原始文件摘录</h2>
+      <p class="desc">以下文本直接取自控制局档案库原件。涂黑部分为原文既有，非本终端所为。将鼠标移至密文条上可查看该字段的保留字数；提升顶部密级可解译更多字段。</p>
+    </div>
+    <div class="cols-2 reveal" id="doc-grid"></div>
+  </section>
+
+  <!-- 11 · 术语表 -------------------------------------------------------- -->
+  <section class="sec" id="s-glossary" data-no="11">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 11 / 16</span><span class="rule-red"></span></div>
+      <h2>控制局词典</h2>
+      <p class="desc">新入职人员必须在 72 小时内掌握以下术语。考试不及格者将被重新分配至废品处理部。</p>
+    </div>
+    <div class="gloss-search reveal">
+      <span class="mono tiny faint">检索</span>
+      <input type="search" id="gloss-input" placeholder="输入术语、编号或关键词…（例如：共振、AWE、异化物）" autocomplete="off" aria-label="控制局词典检索">
+      <span class="cnt" id="gloss-count">— / —</span>
+    </div>
+    <div class="gloss reveal" id="gloss-grid"></div>
+  </section>
+
+  <!-- 12 · 编年 ---------------------------------------------------------- -->
+  <section class="sec" id="s-timeline" data-no="12">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 12 / 16</span><span class="rule-red"></span></div>
+      <h2 class="glitch" data-txt="年表">年表</h2>
+      <p class="desc">档案按年份归案，但楼里的时间不太听话——1964 年的记录可能落款 2019，2019 年的备忘录可能引用了尚未写出的文件。以下依年份排列，点顶部刻度可跳转，也可按类型筛选。标注 ▸ 的条目可调阅对应档案。</p>
+    </div>
+    <div class="tl reveal">
+      <div class="tl-head">
+        <div class="tl-legend" id="tl-legend"></div>
+        <div class="tl-count mono" id="tl-count">— / —</div>
+      </div>
+      <div class="tl-rail" id="tl-rail"></div>
+      <div class="tl-list" id="tl-list"></div>
+    </div>
+  </section>
+
+  <!-- 13 · 案卷 ---------------------------------------------------------- -->
+  <section class="sec" id="s-cases" data-no="13">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 13 / 16</span><span class="rule-red"></span></div>
+      <h2>案卷</h2>
+      <p class="desc">编制负责维持秩序，调查扇区负责解释秩序为什么没能维持住。以下卷宗均经过删节——<b>删节本身也是结论的一部分</b>。点开可读完整卷宗，包括现场记录、处置经过与签发栏。</p>
+    </div>
+    <div class="cases reveal">
+      <div class="cases-bar" id="cases-bar"></div>
+      <div class="cases-grid" id="cases-grid"></div>
+    </div>
+  </section>
+
+  <!-- 14 · 内部通讯 ------------------------------------------------------ -->
+  <section class="sec" id="s-comms" data-no="14">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 14 / 16</span><span class="rule-red"></span></div>
+      <h2>内部通讯</h2>
+      <p class="desc">控制局有两套语言：一套写在交给外部世界的报告里，一套留在楼内的广播、备忘录与公告里。以下取自内部信道。措辞的每一次修改，都对应一次已经被归档的事故。</p>
+    </div>
+    <div class="comms reveal" id="comms-stream"></div>
+  </section>
+
+  <!-- 15 · 幕后 ---------------------------------------------------------- -->
+  <section class="sec" id="s-trivia" data-no="15">
+    <div class="sec-head">
+      <div class="row"><span class="sec-no">档案 15 / 16</span><span class="rule-red"></span></div>
+      <h2>幕后：现实中的控制局</h2>
+      <p class="desc">最古老屋有现实原型，董事会有一个配音演员，芬兰神话里真的有一位名叫阿提的水神。以下内容不属于控制局的档案——它们属于我们这个世界。含剧透。</p>
+    </div>
+    <div class="triv-grid reveal" id="trivia-grid"></div>
+  </section>
+
+</main>
+
+<!-- =====================================================================
+     页脚
+     ===================================================================== -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <h4>关于本终端</h4>
+      <ul>
+        <li>本页面为游戏《Control》（Remedy Entertainment, 2019）世界观的<b>非官方爱好者档案</b>。</li>
+        <li>所有名词、事件、人名版权归 Remedy Entertainment 所有。</li>
+        <li>资料整理自 Control Fandom Wiki 与游戏内文献；「幕后」一卷为现实原型与创作参考。</li>
+      </ul>
+    </div>
+    <div>
+      <h4>快捷操作</h4>
+      <ul>
+        <li><b>Ctrl / ⌘ + K</b> · 全站检索（也可直接按 <b>/</b>）</li>
+        <li><b>0–4</b> · 切换密级许可（0 = 公开摘要，4 = 局长权限）</li>
+        <li><b>H</b> · 切换嘶鸣污染模拟</li>
+        <li><b>S</b> · 切换终端音效</li>
+        <li><b>M</b> · 切换环境音乐</li>
+        <li><b>G</b> · 跳转词典检索</li>
+        <li><b>ESC</b> · 关闭档案浮层</li>
+        <li><b>Enter</b> · 进入档案（准入页）</li>
+      </ul>
+    </div>
+    <div>
+      <h4>密级声明</h4>
+      <ul>
+        <li>本终端内容按 <b>《内部安全条例》§7</b> 分级披露。</li>
+        <li>解密行为将被记录并提交至 <b>调查部</b>。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-legal">
+    <span class="label">© 联邦控制局 · 内部档案终端 · 节点 NY-OLDEST-HOUSE-01</span>
+    <span class="label">本站为粉丝作品 · 与 Remedy Entertainment 无隶属关系</span>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- 环境音乐：由 tools/make_ambience.py 生成，72 秒无缝循环 -->
+<audio id="bgm" loop preload="none">
+  <source src="assets/audio/ambience.m4a" type="audio/mp4">
+  <source src="assets/audio/ambience.wav" type="audio/wav">
+</audio>
+
+<script defer src="assets/js/data.js"></script>
+<script defer src="assets/js/depts-extra.js"></script>
+<script defer src="assets/js/items-extra.js"></script>
+<script defer src="assets/js/glossary-extra.js"></script>
+<script defer src="assets/js/pois.js"></script>
+<script defer src="assets/js/cases.js"></script>
+<script defer src="assets/js/timeline.js"></script>
+<script defer src="assets/js/comms.js"></script>
+<script defer src="assets/js/dossier-items.js"></script>
+<script defer src="assets/js/dossier-depts.js"></script>
+<script defer src="assets/js/dossier-depts-extra.js"></script>
+<script defer src="assets/js/dossier-awe.js"></script>
+<script defer src="assets/js/dossier-cast.js"></script>
+<script defer src="assets/js/dossier-floor.js"></script>
+<script defer src="assets/js/dossier-glossary.js"></script>
+<script defer src="assets/js/dossier-areas.js"></script>
+<script defer src="assets/js/render.js"></script>
+<script defer src="assets/js/app.js"></script>
+</body>
+</html>

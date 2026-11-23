@@ -1,0 +1,677 @@
+/* ==========================================================================
+   sections.css —— 12 年表 / 13 案卷 / 14 内部通讯 的样式
+   与 components.css 分开，避免那个文件继续膨胀。
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   12 年表
+   -------------------------------------------------------------------------- */
+
+.tl-head {
+  display: flex; align-items: center; gap: .8rem; flex-wrap: wrap;
+  margin-bottom: .9rem;
+}
+.tl-legend { display: flex; flex-wrap: wrap; gap: .35rem; }
+.tl-count {
+  margin-left: auto; font-size: .58rem; letter-spacing: .14em;
+  color: var(--bone-faint);
+}
+.tl-legend .chip[aria-pressed="true"] { border-color: var(--red); color: var(--bone); background: rgba(207,42,30,.14); }
+
+/* 顶部刻度：按十年分格，可跳转 */
+.tl-rail {
+  display: grid; grid-template-columns: repeat(9, minmax(0, 1fr));
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  margin-bottom: 1.4rem; background: var(--ink-2);
+}
+.tl-tick {
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  gap: .32rem; padding: .45rem .2rem .5rem;
+  background: none; border: none; border-right: 1px solid var(--line-soft);
+  cursor: pointer; color: var(--bone-dim);
+  transition: background .22s, color .22s;
+}
+.tl-tick:last-child { border-right: none; }
+.tl-tick b {
+  font-family: var(--font-mono); font-size: .58rem;
+  letter-spacing: .08em; font-weight: 500;
+}
+.tl-tick i {
+  display: block; width: 1px; height: 7px; background: var(--red);
+  opacity: .8;
+}
+.tl-tick:hover { background: rgba(207,42,30,.1); color: var(--bone); }
+.tl-tick:focus-visible { outline: 1px solid var(--red); outline-offset: -1px; }
+.tl-tick.is-empty { opacity: .32; cursor: default; }
+.tl-tick.is-empty i { background: var(--line); }
+.tl-tick.is-empty:hover { background: none; color: var(--bone-dim); }
+
+/* 纵向条目：年份在左，事件在右 */
+.tl-group {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr);
+  gap: 0 1.4rem; padding-bottom: 1.5rem;
+  position: relative;
+}
+.tl-group::before {
+  content: ""; position: absolute; left: 96px; top: .6rem; bottom: 0;
+  width: 1px; background: var(--line-soft);
+}
+.tl-y {
+  position: relative; text-align: right; padding-top: .1rem;
+}
+.tl-y b {
+  font-family: var(--font-mono); font-size: 1.05rem; font-weight: 700;
+  letter-spacing: .04em; color: var(--red-bright);
+  position: relative;
+}
+.tl-y b::after {
+  content: ""; position: absolute; right: -1.4rem; top: 50%;
+  width: 7px; height: 7px; margin-top: -3.5px;
+  background: var(--ink); border: 1px solid var(--red); border-radius: 50%;
+}
+.tl-ev { display: grid; gap: .5rem; }
+
+.tl-e {
+  border-left: 2px solid var(--line);
+  padding: .5rem .8rem .55rem;
+  background: var(--concrete);
+  transition: border-color .22s, background .22s;
+}
+.tl-e:hover { border-left-color: var(--red); background: var(--concrete-2); }
+.tl-e-hd {
+  display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: .25rem;
+}
+.tl-e-k {
+  font-family: var(--font-mono); font-size: .5rem; letter-spacing: .14em;
+  padding: .06rem .3rem; border: 1px solid var(--line);
+  color: var(--bone-faint); flex: none;
+}
+.tl-e-hd b { font-size: .9rem; font-weight: 600; }
+.tl-e-d { margin-left: auto; font-size: .54rem; letter-spacing: .1em; color: var(--bone-faint); }
+.tl-e p { font-size: .82rem; line-height: 1.85; color: var(--bone-dim); margin: 0; }
+.tl-link {
+  display: inline-block; margin-top: .35rem; padding: .1rem 0;
+  font-family: var(--font-mono); font-size: .56rem; letter-spacing: .08em;
+  color: var(--red-bright); background: none; border: none; cursor: pointer;
+  border-bottom: 1px dashed rgba(207,42,30,.4);
+}
+.tl-link:hover { color: var(--red-bright); border-bottom-style: solid; }
+
+/* 各类别的左侧色 */
+.tl-e-bureau   { border-left-color: #c9a227; }
+.tl-e-awe      { border-left-color: var(--red); }
+.tl-e-item     { border-left-color: #4a86c9; }
+.tl-e-person   { border-left-color: #7a8f5a; }
+.tl-e-event    { border-left-color: var(--line); }
+.tl-e-hiss     { border-left-color: #6d74ff; }
+.tl-e-bureau .tl-e-k   { border-color: #c9a227; color: #c9a227; }
+.tl-e-awe .tl-e-k      { border-color: var(--red); color: var(--red-bright); }
+.tl-e-item .tl-e-k     { border-color: #4a86c9; color: #4a86c9; }
+.tl-e-person .tl-e-k   { border-color: #7a8f5a; color: #7a8f5a; }
+.tl-e-hiss .tl-e-k     { border-color: #6d74ff; color: #6d74ff; }
+
+/* --------------------------------------------------------------------------
+   13 案卷
+   -------------------------------------------------------------------------- */
+
+.cases-bar {
+  display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+  margin-bottom: 1.2rem;
+}
+.cases-bar .chip[aria-pressed="true"] { border-color: var(--red); color: var(--bone); background: rgba(207,42,30,.14); }
+
+.cases-grid {
+  display: grid; gap: .9rem;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+}
+.case-card {
+  display: flex; flex-direction: column; gap: .4rem;
+  border: 1px solid var(--line); background: var(--concrete);
+  padding: .95rem 1rem 1rem;
+  transition: border-color .25s, background .25s;
+  position: relative;
+}
+.case-card::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--line);
+  transition: background .25s;
+}
+.case-card:hover { border-color: var(--bone-faint); background: var(--concrete-2); }
+.case-card:hover::before { background: var(--red); }
+.case-card.is-infil::before { background: #6d74ff; }
+.case-card.is-infil { border-color: rgba(109,116,255,.4); }
+
+.case-top {
+  display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap;
+}
+.case-id { font-size: .6rem; letter-spacing: .1em; color: var(--red-bright); }
+.case-date { font-size: .56rem; letter-spacing: .08em; color: var(--bone-faint); }
+.case-k {
+  margin-left: auto; font-family: var(--font-mono); font-size: .48rem;
+  letter-spacing: .14em; padding: .05rem .3rem;
+  border: 1px solid var(--line); color: var(--bone-faint);
+}
+.case-card h3 { font-size: 1.02rem; font-weight: 700; margin: .1rem 0 0; line-height: 1.4; }
+.case-loc {
+  font-size: .56rem; letter-spacing: .08em; color: var(--bone-faint);
+}
+.case-card p {
+  font-size: .8rem; line-height: 1.85; color: var(--bone-dim);
+  margin: .3rem 0 0; flex: 1 1 auto;
+}
+.case-foot {
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+  margin-top: .5rem; padding-top: .5rem;
+  border-top: 1px dashed var(--line-soft);
+}
+.case-threat {
+  font-family: var(--font-mono); font-size: .5rem; letter-spacing: .1em;
+  color: var(--yellow);
+}
+.case-status {
+  font-family: var(--font-mono); font-size: .5rem; letter-spacing: .1em;
+  color: var(--bone-faint);
+}
+.case-foot .dos-open { margin-left: auto; }
+
+/* --------------------------------------------------------------------------
+   14 内部通讯
+   -------------------------------------------------------------------------- */
+
+.comms { display: grid; gap: 1.1rem; }
+
+.comm {
+  border: 1px solid var(--line); background: var(--concrete);
+  padding: 1.05rem 1.2rem 1.1rem;
+  position: relative;
+}
+.comm::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--line);
+}
+.comm-radio::before     { background: #c9a227; }
+.comm-memo::before      { background: var(--bone-faint); }
+.comm-notice::before    { background: var(--red); }
+.comm-letter::before    { background: #7a8f5a; }
+.comm-broadcast::before { background: #6d74ff; }
+
+.comm-hd {
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+  margin-bottom: .55rem;
+}
+.comm-ic {
+  font-size: .8rem; color: var(--bone-faint); line-height: 1;
+}
+.comm-k {
+  font-family: var(--font-mono); font-size: .5rem; letter-spacing: .16em;
+  padding: .07rem .34rem; border: 1px solid var(--line);
+  color: var(--bone-faint);
+}
+.comm-id { font-size: .56rem; letter-spacing: .1em; color: var(--bone-dim); }
+.comm-date { margin-left: auto; font-size: .56rem; letter-spacing: .1em; color: var(--bone-faint); }
+
+.comm h3 { font-size: 1.06rem; font-weight: 700; margin: 0 0 .35rem; line-height: 1.4; }
+.comm-route {
+  display: flex; align-items: center; gap: .45rem; flex-wrap: wrap;
+  font-size: .56rem; letter-spacing: .08em; color: var(--bone-faint);
+  margin-bottom: .55rem;
+}
+.comm-route i { font-style: normal; color: var(--red-bright); }
+.comm-lead {
+  font-size: .86rem; line-height: 1.8; color: var(--bone);
+  border-left: 1px solid var(--red); padding-left: .8rem;
+  margin: .2rem 0 .8rem;
+}
+.comm-body p {
+  font-size: .84rem; line-height: 1.95; color: var(--bone-dim);
+  margin: 0 0 .7rem;
+}
+.comm-body p:last-child { margin-bottom: 0; }
+.comm-note {
+  margin: .9rem 0 0; padding-top: .6rem;
+  border-top: 1px dashed var(--line-soft);
+  font-size: .72rem; line-height: 1.8; color: var(--bone-faint);
+}
+.comm-note::before { content: "档案员批注 · "; color: var(--red-bright); font-family: var(--font-mono); font-size: .9em; }
+
+/* 公告类：短、硬、居中一点 */
+.comm-notice .comm-body p {
+  font-family: var(--font-mono); font-size: .78rem;
+  letter-spacing: .02em; color: var(--bone);
+}
+/* 信件类：略带手写感的留白 */
+.comm-letter .comm-body p { line-height: 2.1; }
+
+/* --------------------------------------------------------------------------
+   词典卡片：有二级档案的加标识
+   -------------------------------------------------------------------------- */
+
+.gloss-item.is-deep { position: relative; }
+.gloss-item.is-deep::after {
+  content: ""; position: absolute; top: 0; right: 0;
+  width: 0; height: 0;
+  border-top: 7px solid var(--red);
+  border-left: 7px solid transparent;
+  opacity: .75;
+}
+.gloss-open {
+  margin-top: .6rem; font-size: .62rem; padding: .22rem .6rem;
+}
+
+/* --------------------------------------------------------------------------
+   窄屏
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .tl-rail { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .tl-tick:nth-child(5n) { border-right: none; }
+  .cases-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .tl-group { grid-template-columns: 62px minmax(0, 1fr); gap: 0 .9rem; }
+  .tl-group::before { left: 62px; }
+  .tl-y b { font-size: .84rem; }
+  .tl-y b::after { right: -.9rem; width: 6px; height: 6px; margin-top: -3px; }
+  .tl-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tl-count { margin-left: 0; }
+  .comm { padding: .9rem .9rem 1rem; }
+  .comm h3 { font-size: .98rem; }
+  .case-card { padding: .85rem .85rem .9rem; }
+}
+
+/* --------------------------------------------------------------------------
+   全站检索面板（Ctrl / Cmd + K）
+   -------------------------------------------------------------------------- */
+
+.palette { position: fixed; inset: 0; z-index: 950; display: none; }
+.palette.is-open { display: block; }
+.pal-scrim {
+  position: absolute; inset: 0;
+  background: rgba(7, 7, 10, .84);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.pal-panel {
+  position: relative;
+  width: min(760px, calc(100vw - 2rem));
+  margin: 10vh auto 0;
+  border: 1px solid var(--line);
+  background: var(--ink-2);
+  box-shadow: 0 26px 90px rgba(0, 0, 0, .75);
+  display: flex; flex-direction: column;
+  max-height: 72vh;
+}
+.pal-hd {
+  display: flex; align-items: center; gap: .7rem;
+  padding: .8rem 1rem;
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+.pal-ic { color: var(--red); font-size: 1rem; line-height: 1; }
+#pal-input {
+  flex: 1 1 auto; min-width: 0;
+  background: none; border: none; outline: none;
+  color: var(--bone); font-family: var(--font-sans); font-size: .98rem;
+  padding: .1rem 0;
+}
+#pal-input::placeholder { color: var(--bone-faint); }
+.pal-x {
+  flex: none; cursor: pointer;
+  background: none; border: 1px solid var(--line);
+  color: var(--bone-faint);
+  font-family: var(--font-mono); font-size: .5rem; letter-spacing: .14em;
+  padding: .22rem .5rem;
+  transition: border-color .2s, color .2s;
+}
+.pal-x:hover { border-color: var(--red); color: var(--red-bright); }
+
+.pal-list { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; }
+.pal-item {
+  display: flex; align-items: baseline; gap: .6rem;
+  padding: .5rem .95rem;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: background .16s, border-color .16s;
+}
+.pal-item:hover { background: rgba(233, 229, 219, .04); }
+.pal-item.is-on {
+  background: rgba(207, 42, 30, .13);
+  border-left-color: var(--red);
+}
+.pal-k {
+  flex: none;
+  font-family: var(--font-mono); font-size: .46rem; letter-spacing: .14em;
+  padding: .05rem .3rem;
+  border: 1px solid var(--line);
+  color: var(--bone-faint);
+}
+.pal-item.is-on .pal-k { border-color: var(--red); color: var(--red-bright); }
+.pal-t {
+  font-size: .86rem; color: var(--bone);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  min-width: 0;
+}
+.pal-t mark { background: rgba(207, 42, 30, .3); color: #fff; }
+.pal-s {
+  margin-left: auto; flex: none;
+  font-family: var(--font-mono); font-size: .52rem;
+  color: var(--bone-faint);
+  max-width: 44%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pal-empty {
+  padding: 1.8rem 1rem; text-align: center;
+  font-size: .82rem; line-height: 1.9; color: var(--bone-faint);
+}
+.pal-foot {
+  flex: none;
+  display: flex; align-items: center; gap: 1rem;
+  padding: .48rem .95rem;
+  border-top: 1px solid var(--line);
+  font-size: .5rem; letter-spacing: .1em;
+  color: var(--bone-faint);
+}
+.pal-foot kbd {
+  display: inline-block;
+  border: 1px solid var(--line);
+  padding: 0 .26em;
+  margin-right: .12em;
+  font-family: var(--font-mono);
+  color: var(--bone-dim);
+}
+.pal-cnt { margin-left: auto; color: var(--red-bright); }
+
+@media (max-width: 640px) {
+  .pal-panel { margin-top: 6vh; max-height: 80vh; }
+  .pal-foot { gap: .6rem; font-size: .46rem; }
+  .pal-s { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   03 互动地图（点位图）
+   -------------------------------------------------------------------------- */
+
+.poi {
+  display: grid;
+  grid-template-columns: 216px minmax(0, 1fr);
+  background: #6a6a6a;
+  /* 盖在 CRT 扫描线（#fx-scan, z-index 781）之上：
+     底图必须是干净的灰面，不能有横向条纹 */
+  position: relative;
+  z-index: 790;
+}
+
+/* ---- 左侧筛选 ---- */
+.poi-side {
+  border-right: 1px solid var(--line);
+  background: var(--ink-2);
+  display: flex; flex-direction: column;
+  min-width: 0;
+}
+.poi-side-hd {
+  display: flex; align-items: center; gap: .35rem; flex-wrap: wrap;
+  padding: .65rem .7rem;
+  border-bottom: 1px solid var(--line);
+}
+.poi-side-hd .label { flex: 1 1 auto; }
+.poi-side-hd .chip { font-size: .5rem; padding: .18rem .42rem; }
+
+.poi-filters {
+  flex: 1 1 auto;
+  overflow-y: auto; overscroll-behavior: contain;
+  max-height: clamp(340px, 56vh, 620px);
+  padding: .4rem 0 .6rem;
+}
+.poi-bkt { margin-bottom: .5rem; }
+.poi-bkt-hd {
+  padding: .3rem .7rem .22rem;
+  font-family: var(--font-mono); font-size: .46rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--bone-faint);
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: .2rem;
+}
+.poi-f {
+  display: flex; align-items: center; gap: .42rem;
+  padding: .26rem .7rem;
+  cursor: pointer;
+  font-size: .64rem; color: var(--bone-dim);
+  transition: background .16s, color .16s;
+}
+.poi-f:hover { background: rgba(233,229,219,.04); color: var(--bone); }
+.poi-f input {
+  position: absolute; opacity: 0; width: 0; height: 0;
+  pointer-events: none;
+}
+.poi-sw {
+  flex: none; width: 9px; height: 9px;
+  border: 1px solid var(--c, #8a8578);
+  background: var(--c, #8a8578);
+  border-radius: 50%;
+  transition: background .16s, border-color .16s, opacity .16s;
+}
+.poi-f.is-off .poi-sw { background: transparent; opacity: .55; }
+.poi-f.is-off .poi-fn { opacity: .45; }
+.poi-fn {
+  flex: 1 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: .54rem;
+  letter-spacing: .06em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.poi-fc {
+  flex: none;
+  font-family: var(--font-mono); font-size: .48rem;
+  color: var(--bone-faint); font-weight: 400;
+}
+.poi-f:focus-within { outline: 1px solid var(--red); outline-offset: -1px; }
+.poi-count {
+  flex: none;
+  padding: .5rem .7rem;
+  border-top: 1px solid var(--line);
+  font-size: .52rem; letter-spacing: .1em;
+  color: var(--red-bright);
+  background: var(--ink);
+}
+
+/* ---- 右侧地图 ---- */
+.poi-main { display: flex; flex-direction: column; min-width: 0; }
+
+.poi-tools {
+  display: flex; align-items: center; gap: .8rem; flex-wrap: wrap;
+  padding: .55rem .9rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--ink-2);
+}
+.poi-tools .label { color: var(--bone-faint); }
+.poi-zoombox { display: inline-flex; align-items: center; gap: .3rem; }
+.poi-zoombox .chip { min-width: 30px; justify-content: center; }
+.poi-zlv {
+  font-size: .62rem; letter-spacing: .06em;
+  color: var(--bone-dim); min-width: 46px; text-align: center;
+}
+.poi-hint { margin-left: auto; font-size: .5rem; letter-spacing: .1em; color: var(--bone-faint); opacity: .8; }
+
+.poi-canvas {
+  position: relative; overflow: hidden;
+  /* 与瓦片纯色底相同的灰：板块之间的缝隙和画布四周都融进底色，
+     整块画布看起来是一张无限延伸的灰色地图，没有黑边 */
+  background: #666666;
+  height: clamp(420px, 62vh, 700px);
+  cursor: grab; touch-action: none;
+  contain: layout paint;
+}
+.poi-canvas.is-panning { cursor: grabbing; }
+.poi-canvas.is-panning .poi-stage { transition: none; }
+.poi-canvas:focus-visible { outline: 1px solid var(--red); outline-offset: -1px; }
+
+.poi-svg {
+  position: absolute; top: 0; left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+/* 瓦片舞台：逻辑画布按 z14 像素刻度，transform 负责缩放平移 */
+.poi-stage {
+  position: absolute; top: 0; left: 0;
+  transform-origin: 0 0;
+}
+/* 六个扇区各自的裁剪窗口：紧凑排布后板块彼此紧贴，
+   包围盒之外的空白瓦片被裁掉，不再有大片灰底 */
+.poi-sects { position: absolute; inset: 0; }
+.poi-sect { position: absolute; overflow: hidden; }
+.poi-tiles { position: absolute; inset: 0; }
+.poi-tile {
+  position: absolute; display: block;
+  user-select: none; -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* 底图与扇区标注 */
+.poi-reg-s {
+  fill: none; stroke: var(--c); stroke-width: 1.6;
+  stroke-dasharray: 10 6; opacity: .55;
+}
+.poi-reg-n {
+  font-family: var(--font-mono);
+  font-size: 19px; font-weight: 700;
+  fill: var(--c); text-anchor: middle;
+  opacity: .62; letter-spacing: .08em;
+}
+.poi-reg-c {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  fill: var(--bone-faint);
+  text-anchor: middle;
+  opacity: .5;
+}
+
+/* 水滴图钉：屏幕恒定大小（--inv 抵消缩放），尖端指向坐标点 */
+.poi-pin {
+  transform: translate(var(--x, 0px), var(--y, 0px)) scale(var(--inv, 1)) translate(-12px, -32px);
+  cursor: pointer;
+  pointer-events: auto;
+}
+/* 不用 filter：929 颗图钉各自算阴影会把渲染拖死，改用描边保证对比 */
+.poi-pin-bg {
+  fill: var(--c, #e3bc42);
+  stroke: rgba(0, 0, 0, .62);
+  stroke-width: 1.1;
+}
+.poi-pin-g {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  fill: rgba(18, 18, 22, .85);
+  text-anchor: middle;
+  pointer-events: none;
+}
+.poi-pin:hover .poi-pin-bg { stroke: #fff; stroke-width: 1.8; }
+.poi-pin.is-on .poi-pin-bg { stroke: #fff; stroke-width: 1.8; }
+
+/* AREA 类别 = 房间/区域本身，渲染成文字标注而不是图标 */
+.poi-label {
+  font-family: var(--font-mono);
+  font-size: calc(var(--lab, 210) * 1px);
+  fill: #cfdad6;
+  letter-spacing: .1em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  stroke: rgba(6, 8, 10, .82);
+  stroke-width: calc(var(--lab, 210) * 0.16px);
+  stroke-linejoin: round;
+  paint-order: stroke;
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: .88;
+  transition: fill .16s, opacity .16s;
+}
+.poi-label:hover, .poi-label.is-on { fill: #fff; opacity: 1; }
+
+/* 点选后的提示条 */
+.poi-tip {
+  min-height: 2.1rem;
+  display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+  padding: .5rem .9rem;
+  border-top: 1px solid var(--line);
+  background: var(--ink-2);
+  font-size: .58rem; letter-spacing: .04em;
+  color: var(--bone-faint);
+}
+.poi-tip b {
+  font-family: var(--font-sans); font-size: .8rem;
+  letter-spacing: .1em; color: var(--bone);
+  font-weight: 600;
+}
+.poi-tip span {
+  font-family: var(--font-mono); font-size: .5rem;
+  letter-spacing: .14em;
+  padding: .06rem .34rem;
+  border: 1px solid var(--line);
+  color: var(--bone-faint);
+}
+.poi-tip i {
+  font-style: normal; font-family: var(--font-mono);
+  font-size: .52rem; letter-spacing: .1em;
+  color: var(--red-bright);
+  margin-left: auto;
+}
+.poi-tip::before {
+  content: "▸";
+  color: var(--line);
+  font-size: .8rem;
+}
+.poi-tip.is-on { color: var(--bone-dim); }
+.poi-tip.is-on::before { color: var(--red); }
+
+@media (max-width: 1000px) {
+  .poi { grid-template-columns: 1fr; }
+  .poi-side { border-right: none; border-bottom: 1px solid var(--line); }
+  .poi-filters { max-height: 34vh; columns: 2; column-gap: .5rem; }
+  .poi-bkt { break-inside: avoid; }
+  .poi-hint { margin-left: 0; flex-basis: 100%; }
+}
+@media (max-width: 640px) {
+  .poi-canvas { height: 58vh; min-height: 320px; }
+  .poi-filters { columns: 1; max-height: 30vh; }
+  .poi-tools { gap: .5rem; }
+}
+
+
+/* --------------------------------------------------------------------------
+   02 最古老屋 · 按地图扇区结构排列的区域清单
+   -------------------------------------------------------------------------- */
+
+.area-list {
+  list-style: none; margin: 0; padding: .28rem 0 .28rem .45rem;
+  display: grid; gap: 1px;
+}
+.area-row {
+  display: flex; align-items: baseline; gap: .5rem;
+  width: 100%; text-align: left;
+  padding: .26rem .55rem;
+  border: none; border-left: 2px solid transparent;
+  background: transparent; font: inherit;
+  transition: background .16s, border-color .16s;
+}
+.area-row b { font-size: .78rem; font-weight: 500; color: var(--bone); white-space: nowrap; }
+.area-row i {
+  font-style: normal; font-family: var(--font-mono);
+  font-size: .5rem; letter-spacing: .05em;
+  color: var(--bone-faint); text-transform: uppercase;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.area-row em {
+  font-style: normal; margin-left: auto; flex: none;
+  font-family: var(--font-mono); font-size: .54rem;
+  color: var(--red-bright);
+}
+button.area-row { cursor: pointer; }
+button.area-row:hover { background: rgba(207, 42, 30, .11); border-left-color: var(--red); }
+button.area-row:hover b { color: #fff; }
+button.area-row:focus-visible { outline: 1px solid var(--red); outline-offset: -1px; }
+
+@media (max-width: 640px) {
+  .area-row { padding: .24rem .4rem; gap: .35rem; }
+  .area-row i { font-size: .46rem; }
+}
+

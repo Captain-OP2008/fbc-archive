@@ -1,0 +1,201 @@
+/* ==========================================================================
+   FEDERAL BUREAU OF CONTROL — INTERNAL ARCHIVE
+   effects.css  ·  胶片噪点 / 扫描线 / 希斯污染 / 故障抖动
+   ========================================================================== */
+
+/* 全屏特效容器 */
+.fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+
+/* --------------------------------------------------------------------------
+   胶片噪点（SVG 分形噪声，内联于 HTML）
+   -------------------------------------------------------------------------- */
+#fx-grain {
+  z-index: 780; opacity: calc(.05 + .16 * var(--hiss));
+  mix-blend-mode: overlay;
+  animation: grain-shift .6s steps(3) infinite;
+}
+#fx-grain svg { width: 100%; height: 100%; }
+@keyframes grain-shift {
+  0%   { transform: translate(0, 0); }
+  33%  { transform: translate(-2%, 1.4%); }
+  66%  { transform: translate(1.6%, -1.2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* --------------------------------------------------------------------------
+   CRT 扫描线
+   -------------------------------------------------------------------------- */
+/* 横向扫描线已移除：它覆盖在 <main> 之上（main 是 z-index:2 的层叠上下文），
+   任何容器自身的 z-index 都压不过它，地图上会出现去不掉的横纹。
+   只保留漂移亮带，CRT 味道还在。 */
+#fx-scan { z-index: 781; opacity: calc(.34 + .3 * var(--hiss)); }
+#fx-scan::after { /* 漂移亮带 */
+  content: ""; position: absolute; left: 0; right: 0; height: 26vh;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,.028) 45%, transparent);
+  animation: band 9s linear infinite;
+}
+@keyframes band { 0% { top: -30vh; } 100% { top: 110vh; } }
+
+/* --------------------------------------------------------------------------
+   暗角 + 顶部红色渗漏
+   -------------------------------------------------------------------------- */
+#fx-vig { z-index: 779; }
+#fx-vig::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 42%, rgba(0,0,0,.62) 100%),
+    linear-gradient(180deg, rgba(207,42,30, calc(.05 + .22 * var(--hiss))) 0, transparent 26vh);
+}
+
+/* --------------------------------------------------------------------------
+   希斯污染层
+   -------------------------------------------------------------------------- */
+#fx-hiss { z-index: 782; opacity: 0; transition: opacity .9s var(--ease); }
+body.is-hiss #fx-hiss { opacity: 1; }
+#fx-hiss::before { /* 红雾 */
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 22% 18%, rgba(255,40,28,.13), transparent 46%),
+    radial-gradient(ellipse at 82% 74%, rgba(255,40,28,.11), transparent 44%),
+    linear-gradient(180deg, rgba(90,6,2,.2), rgba(40,0,0,.3));
+  animation: hiss-breathe 6.5s ease-in-out infinite;
+}
+#fx-hiss::after { /* 横向撕裂条 */
+  content: ""; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg,
+      rgba(255,58,46,.075) 0 2px, transparent 2px 46px,
+      rgba(255,58,46,.045) 46px 47px, transparent 47px 130px);
+  mix-blend-mode: screen;
+  animation: hiss-tear 11s linear infinite;
+}
+@keyframes hiss-breathe { 0%,100% { opacity: .78; } 50% { opacity: 1; } }
+@keyframes hiss-tear { 0% { background-position-y: 0; } 100% { background-position-y: 130px; } }
+
+/* 污染状态下全站微抖 —— 只作用于内容层，避免 fixed 元素错位 */
+body.is-hiss main,
+body.is-hiss #hud,
+body.is-hiss footer { animation: hiss-jitter .28s steps(2) infinite; }
+@keyframes hiss-jitter {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-1px, .6px); }
+  100% { transform: translate(.8px, -.5px); }
+}
+
+/* 污染状态下红色替换 */
+body.is-hiss { --red: #ff3d2e; --red-deep: #a3160d; --line-soft: #3a1410; --concrete-2: #1e1214; }
+body.is-hiss .sec { border-color: #3a1410; }
+
+/* 污染切换按钮的高亮 */
+body.is-hiss #btn-hiss { color: #fff; background: var(--red); border-color: var(--red); }
+body.is-hiss #btn-hiss .dot { animation: blink .5s steps(1) infinite; }
+
+/* --------------------------------------------------------------------------
+   Glitch 文字（用于标题故障）
+   -------------------------------------------------------------------------- */
+.glitch { position: relative; display: inline-block; }
+.glitch::before, .glitch::after {
+  content: attr(data-txt); position: absolute; left: 0; top: 0;
+  width: 100%; overflow: hidden; pointer-events: none;
+}
+.glitch::before { color: #00e5ff; transform: translate(-2px, 0); opacity: 0; mix-blend-mode: screen; }
+.glitch::after  { color: var(--red-bright); transform: translate(2px, 0); opacity: 0; mix-blend-mode: screen; }
+.glitch.is-glitching::before { opacity: .9; animation: gl-a .34s steps(2) 3; }
+.glitch.is-glitching::after  { opacity: .9; animation: gl-b .34s steps(2) 3; }
+@keyframes gl-a { 0% { transform: translate(-3px, 0); clip-path: inset(0 0 62% 0); } 50% { transform: translate(3px, -2px); clip-path: inset(38% 0 0 0); } 100% { transform: translate(-2px, 1px); clip-path: inset(12% 0 44% 0); } }
+@keyframes gl-b { 0% { transform: translate(3px, 0); clip-path: inset(54% 0 8% 0); } 50% { transform: translate(-3px, 2px); clip-path: inset(6% 0 70% 0); } 100% { transform: translate(2px, -1px); clip-path: inset(66% 0 2% 0); } }
+
+/* --------------------------------------------------------------------------
+   打字机光标
+   -------------------------------------------------------------------------- */
+.type-caret::after {
+  content: "▌"; color: var(--red-bright); margin-left: .06em;
+  animation: blink 1s steps(1) infinite;
+}
+
+/* --------------------------------------------------------------------------
+   蓝图网格背景（章节底纹）
+   -------------------------------------------------------------------------- */
+.grid-bg { position: relative; }
+.grid-bg::before {
+  /* 只向上/下出血 2px；左右出血会让 <body> 多出 2px 横向滚动宽度 */
+  content: ""; position: absolute; inset: -2px 0; pointer-events: none; opacity: .5;
+  background-image:
+    linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.026) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 78%);
+}
+
+/* --------------------------------------------------------------------------
+   鼠标光晕（跟随）
+   -------------------------------------------------------------------------- */
+#fx-glow {
+  z-index: 776; mix-blend-mode: screen; opacity: 0;
+  transition: opacity .5s;
+  /* 固定尺寸的圆 + transform 位移：鼠标移动时只走合成器，
+     不再每帧重写 :root 的 --mx/--my（那会让整份文档样式失效，实测掉到 30fps）。 */
+  inset: auto; left: 0; top: 0; width: 640px; height: 640px;
+  background: radial-gradient(circle closest-side,
+              rgba(207,42,30,.16), rgba(207,42,30,.05) 45%, transparent 72%);
+  transform: translate3d(-320px, -320px, 0);
+  will-change: transform;
+}
+body.is-live #fx-glow { opacity: 1; }
+body.is-hiss #fx-glow {
+  background: radial-gradient(circle closest-side,
+              rgba(255,58,46,.26), rgba(255,58,46,.08) 45%, transparent 72%);
+}
+
+/* --------------------------------------------------------------------------
+   章节编号水印
+   -------------------------------------------------------------------------- */
+.sec::after {
+  content: attr(data-no);
+  position: absolute; right: var(--gut); top: clamp(2rem, 5vw, 4rem);
+  font-family: var(--font-sans); font-size: clamp(4rem, 11vw, 11rem);
+  font-weight: 800; line-height: .78; letter-spacing: -.06em;
+  color: rgba(255,255,255,.02); pointer-events: none; user-select: none;
+}
+body.is-hiss .sec::after { color: rgba(255,58,46,.05); }
+
+/* --------------------------------------------------------------------------
+   载入时的章节扫入
+   -------------------------------------------------------------------------- */
+.sec-head h2 { position: relative; }
+.sec-head h2::after {
+  content: ""; position: absolute; left: 0; bottom: -.35rem; height: 2px; width: 0;
+  background: var(--red); transition: width 1.1s .15s var(--ease-hard);
+}
+.sec.is-in .sec-head h2::after { width: min(180px, 40%); }
+
+/* --------------------------------------------------------------------------
+   reduced-motion：无限装饰动画全部停掉（base.css 里只压了时长），
+   噪点 / 扫描线 / 污染抖动这些纯装饰层直接隐藏或定格
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  #fx-grain, #fx-scan { display: none; }
+  #fx-hiss::before, #fx-hiss::after { animation: none !important; }
+  body.is-hiss main,
+  body.is-hiss #hud,
+  body.is-hiss footer,
+  body.is-hiss #btn-hiss .dot { animation: none !important; }
+  .type-caret::after, .board-feed .cursor { animation: none !important; }
+  .pyramid,
+  .pyramid-wrap.is-sync .pyramid,
+  .pyramid-wrap.is-sync .rings i,
+  .glitch.is-glitching::before,
+  .glitch.is-glitching::after { animation: none !important; }
+  .sec-head h2::after { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   打印
+   -------------------------------------------------------------------------- */
+@media print {
+  #hud, #clearance, .rail, #boot, .fx, #cursor, #progress, #toast { display: none !important; }
+  body { background: #fff; color: #000; }
+  .panel, .dept, .cast, .gloss-item { background: #fff; border-color: #bbb; }
+  .doc-card { box-shadow: none; }
+}

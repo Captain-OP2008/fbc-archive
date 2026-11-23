@@ -1,0 +1,243 @@
+/* ==========================================================================
+   FEDERAL BUREAU OF CONTROL — INTERNAL ARCHIVE
+   base.css  ·  设计令牌 / 重置 / 排版基元
+   ========================================================================== */
+
+:root {
+  /* —— 混凝土与墨 —— */
+  --ink:        #07070a;
+  --ink-2:      #0e0e12;
+  --concrete:   #141419;
+  --concrete-2: #1c1c22;
+  --concrete-3: #26262e;
+  --concrete-4: #33333d;
+  --line:       #3a3a44;
+  --line-soft:  #26262e;
+
+  /* —— 档案纸 —— */
+  --bone:       #e9e5db;
+  /* 无障碍：原来的 #a5a199 / #7d7a72 在 #141419 上只有 7.1 / 4.28:1，
+     小号字不达标。这里把两档弱色整体提亮（约 #b9b5ac 一类的浅灰），
+     同时保持 bone > dim > faint 的层级。 */
+  --bone-dim:   #c0bcb3;
+  --bone-faint: #a9a59c;
+  --paper:      #f3f0e9;
+  --paper-2:    #e5e1d8;
+  --paper-ink:  #16161a;
+  --paper-dim:  #6a675f;
+
+  /* —— 控制局红 —— */
+  --red:        #cf2a1e;
+  --red-bright: #ff3d2e;
+  --red-deep:   #7a1410;
+  --red-glow:   rgba(207, 42, 30, 0.55);
+
+  /* —— 警示与异界 —— */
+  --yellow:     #f0c22f;
+  --astral:     #2a2e6e;
+  --astral-lit: #6d74ff;
+  --green:      #4f9e5c;
+  --amber:      #d9861f;
+
+  /* —— 字体 —— */
+  --font-sans: "Helvetica Neue", Helvetica, "Segoe UI", "Arial Narrow", Arial,
+               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei",
+               "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", "SF Mono", Consolas,
+               "Liberation Mono", "Courier New", "Microsoft YaHei UI", "Microsoft YaHei",
+               monospace;
+  --font-serif: Georgia, "Iowan Old Style", "Songti SC", "SimSun", "Times New Roman", serif;
+
+  /* —— 尺度 —— */
+  --gut: clamp(1.1rem, 3.2vw, 3rem);
+  --maxw: 1320px;
+  --nav-h: 62px;
+
+  /* —— 运动 —— */
+  --ease: cubic-bezier(.2, .7, .15, 1);
+  --ease-hard: cubic-bezier(.85, 0, .15, 1);
+
+  /* —— 全局状态（由 JS 改写）—— */
+  --hiss: 0;          /* 0→1 希斯污染强度 */
+  --clearance: 3;     /* 权限等级 0-4 */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* 深色底 + 浅色字：关掉 ClearType 次像素渲染，改用灰度抗锯齿，消除彩边与毛刺 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.72;
+  letter-spacing: .005em;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body.is-locked { overflow: hidden; height: 100vh; }
+
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+hr { border: 0; border-top: 1px solid var(--line-soft); margin: 2.4rem 0; }
+
+::selection { background: var(--red); color: #fff; }
+
+/* —— 滚动条：混凝土槽 —— */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--ink-2); }
+::-webkit-scrollbar-thumb {
+  background: var(--concrete-4);
+  border: 3px solid var(--ink-2);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+/* ==========================================================================
+   排版基元
+   ========================================================================== */
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -.022em;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(2.6rem, 7vw, 6.2rem); font-weight: 800; letter-spacing: -.04em; text-transform: uppercase; }
+h2 { font-size: clamp(1.8rem, 3.6vw, 3.1rem); text-transform: uppercase; }
+h3 { font-size: clamp(1.15rem, 1.7vw, 1.5rem); }
+h4 { font-size: 1rem; letter-spacing: .01em; }
+
+p { margin: 0 0 1.05em; }
+p:last-child { margin-bottom: 0; }
+
+strong, b { font-weight: 700; color: #fff; }
+em { font-style: normal; color: var(--bone); }
+
+/* 标签 / 眉题：宽字距等宽大写 */
+.kicker,
+.label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--bone-faint);
+  margin: 0;
+}
+
+.kicker { color: var(--red-bright); }
+.kicker.is-bone { color: var(--bone-dim); }
+.kicker.is-yellow { color: var(--yellow); }
+.kicker.is-astral { color: var(--astral-lit); }
+
+.mono { font-family: var(--font-mono); font-size: .82em; letter-spacing: .04em; }
+.serif { font-family: var(--font-serif); }
+.dim { color: var(--bone-dim); }
+.astral { color: var(--astral-lit); }
+.hot { color: var(--red-bright); }
+.warn { color: var(--yellow); }
+.ok { color: var(--green); }
+
+/* 自定义光标生效时隐藏系统光标 */
+html.has-cursor,
+html.has-cursor body,
+html.has-cursor body * { cursor: none !important; }
+.faint { color: var(--bone-faint); }
+.hot { color: var(--red-bright); }
+.tiny { font-size: .74rem; line-height: 1.55; }
+.lead { font-size: clamp(1.05rem, 1.5vw, 1.28rem); line-height: 1.68; color: var(--bone); }
+
+/* 数字：等宽表格数字 */
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+
+/* ==========================================================================
+   通用零件
+   ========================================================================== */
+
+.rule { height: 1px; background: var(--line-soft); }
+.rule-red { height: 2px; background: var(--red); width: 46px; }
+.tag {
+  display: inline-flex; align-items: center; gap: .4em;
+  font-family: var(--font-mono); font-size: .64rem; letter-spacing: .16em;
+  text-transform: uppercase; padding: .22em .6em;
+  border: 1px solid var(--line); color: var(--bone-dim);
+  white-space: nowrap;
+}
+.tag.is-red { border-color: var(--red); color: var(--red-bright); background: rgba(207,42,30,.08); }
+.tag.is-yellow { border-color: var(--yellow); color: var(--yellow); background: rgba(240,194,47,.07); }
+.tag.is-green { border-color: var(--green); color: var(--green); background: rgba(79,158,92,.07); }
+.tag.is-astral { border-color: var(--astral-lit); color: var(--astral-lit); background: rgba(109,116,255,.08); }
+.tag.is-head { border-color: var(--line); color: var(--bone-dim); background: rgba(255,255,255,.02); }
+
+/* 涂黑：权限不足时的密文 */
+.redact {
+  display: inline-block; position: relative;
+  max-width: 100%;
+  background: var(--redact-bg, #232329);
+  color: transparent;
+  padding: 0 .28em; margin: 0 .06em;
+  border-radius: 1px;
+  cursor: help;
+  transition: background .28s var(--ease), color .28s var(--ease);
+  user-select: none;
+  vertical-align: baseline;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.045);
+}
+.redact::after {
+  content: attr(data-len);
+  position: absolute; inset: 0; display: grid; place-items: center;
+  color: var(--bone-faint); font-family: var(--font-mono); font-size: .62em;
+  letter-spacing: .1em; opacity: 0; transition: opacity .2s;
+}
+.redact:hover { background: var(--red-deep); }
+.redact:hover::after { opacity: 1; color: #ffbdb8; }
+.redact.is-open {
+  background: rgba(240,194,47,.14);
+  color: var(--yellow);
+  cursor: text;
+  box-shadow: inset 0 0 0 1px rgba(240,194,47,.3);
+}
+.redact.is-open::after { display: none; }
+
+/* 强调下划线 */
+.ul-red { box-shadow: inset 0 -.35em 0 rgba(207,42,30,.28); }
+.ul-yellow { box-shadow: inset 0 -.4em 0 rgba(240,194,47,.2); }
+
+/* 徽标三角 */
+.tri {
+  width: 1em; height: 1em; flex: none;
+  clip-path: polygon(50% 100%, 100% 0, 0 0);
+  background: currentColor;
+}
+
+/* 无障碍 */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+:focus-visible { outline: 2px solid var(--red-bright); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  /* 只压时长不够：无限动画会一直跑。这里同时把循环次数压到 1，
+     具体装饰层（噪点/扫描线/抖动）在 effects.css 里直接 animation:none。 */
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .06s !important;
+  }
+}
